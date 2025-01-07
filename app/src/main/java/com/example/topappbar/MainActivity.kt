@@ -14,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +60,9 @@ fun TopAppBarExample(name: String, modifier: Modifier = Modifier) {
     val myChangingText = remember {
         mutableStateOf("Actions will be shown here")
     }
+    val shouldDropdownExpand = remember {
+        mutableStateOf(false)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -99,8 +104,29 @@ fun TopAppBarExample(name: String, modifier: Modifier = Modifier) {
                     }
                     IconButton(onClick = {
                         myChangingText.value = "More icon is clicked"
+                        shouldDropdownExpand.value = true
                     }) {
                         Icon(Icons.Filled.MoreVert, contentDescription = "")
+                    }
+                    DropdownMenu(
+                        expanded = shouldDropdownExpand.value,
+                        onDismissRequest = { shouldDropdownExpand.value = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Settings") },
+                            onClick = {
+                                myChangingText.value = "Settings is clicked"
+                                shouldDropdownExpand.value = false
+                            },
+
+                            )
+                        DropdownMenuItem(
+                            text = { Text("Log Out") },
+                            onClick = {
+                                myChangingText.value = "Log Out is clicked"
+                                shouldDropdownExpand.value = false
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
